@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beautiful Digital Clock</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #000;
+            font-family: Arial, sans-serif;
+        }
+
+        .clock-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 2vw;
+            padding: clamp(10px, 3vw, 30px);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 90%;
+            max-width: 800px;
+            margin: 1rem;
+        }
+
+        .date {
+            color: #fff;
+            font-size: clamp(30px, 6vw, 70px);
+            text-align: center;
+            margin-bottom: clamp(10px, 2vw, 20px);
+            background: linear-gradient(45deg, #ff00cc, #00ffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: bold;
+        }
+
+        .time-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: clamp(5px, 1.5vw, 15px);
+        }
+
+        .time-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 1vw;
+            padding: clamp(8px, 2vw, 25px);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+            flex: 1;
+            min-width: clamp(60px, 20vw, 120px);
+        }
+
+        /* Modify hover for touch devices */
+        @media (hover: hover) {
+            .time-box:hover {
+                transform: scale(1.05);
+            }
+        }
+
+        .time-number {
+            font-weight: bold;
+            font-size: clamp(30px, 8vw, 80px);
+            font-family: 'DS-Digital', Arial, sans-serif;
+            margin-bottom: clamp(5px, 1vw, 10px);
+            background: -webkit-linear-gradient(#10f8f8, #ff0fc3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .time-label {
+            color: #fff;
+            font-size: clamp(10px, 1.2vw, 14px);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="clock-container">
+        <div class="date" id="date">6 January 2024</div>
+        <div class="time-container">
+            <div class="time-box">
+                <div class="time-number" id="hours">12</div>
+                <div class="time-label">hours</div>
+            </div>
+            <div class="time-box">
+                <div class="time-number" id="minutes">3</div>
+                <div class="time-label">minutes</div>
+            </div>
+            <div class="time-box">
+                <div class="time-number" id="seconds">37</div>
+                <div class="time-label">seconds</div>
+            </div>
+            <div class="time-box">
+                <div class="time-number" id="period">AM</div>
+                <div class="time-label">period</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+            // Update date
+            const day = now.getDate();
+            const month = months[now.getMonth()];
+            const year = now.getFullYear();
+            document.getElementById('date').textContent = `${day} ${month} ${year}`;
+
+            // Update time (12-hour format with AM/PM)
+            let hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            const period = hours >= 12 ? 'PM' : 'AM';
+
+            // Convert to 12-hour format
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+
+            // Add leading zeros
+            hours = hours < 10 ? '0' + hours : hours;
+            let minutesStr = minutes < 10 ? '0' + minutes : minutes;
+            let secondsStr = seconds < 10 ? '0' + seconds : seconds;
+
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutesStr;
+            document.getElementById('seconds').textContent = secondsStr;
+            document.getElementById('period').textContent = period;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+</body>
+
+</html>
